@@ -28,7 +28,6 @@ def split_color_groups(images):
         plt.axis('off')
         plt.title("bv = %.2lf" % images.iloc[i].color, fontsize=9)
         
-    #plt.tight_layout()
     plt.savefig("color_quantiles.pdf")
     return images
     
@@ -37,20 +36,5 @@ if __name__ == "__main__":
     images = pd.read_csv("color_detection/mturk_res/images_proc_cd.csv", index_col = "filename")
     images = images.loc[images.naked == 0]
     
-    images = split_color_groups(images.copy())
-    '''
-    print(images)
-    for color in ["light", "dark"]:
-        for i, im in images.loc[images.color_type == color].iterrows():
-            shutil.copyfile("_all_/"+i, "_"+color+"_/"+i)
-        
+    images = split_color_groups(images.copy())    
     images.to_csv("mturk_results/images_proc_colorgroups.csv")
-    
-    im_err = pd.read_csv("mturk_results/images_proc_errors.csv", index_col = "filename")
-    im_err["color_type"] = images.color_type
-    #images = pd.concat(im_err, images[["r","g","b","color_type"]], axis=1, sort=True, join='outer')
-    
-    print(im_err)
-    
-    im_err.to_csv("mturk_results/images_final.csv", float_format="%.2lf")
-    '''

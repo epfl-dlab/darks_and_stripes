@@ -38,12 +38,6 @@ def plot_image_pair(im1, im2, est):
     plt.axis('off')
 
 def get_group(f):
-    '''
-    if ("_light" in f or "_dark" in f):
-        return "n"
-    else:
-        return "s"
-    '''
     if ("_light" in f):
         return "l"
     elif ("_dark" in f):
@@ -122,17 +116,11 @@ def compute_vote_change(img4, ig):
                (img4.loc["dl","vote2"] - img4.loc["dd","vote2"])
     
 def plot_pair_results(imgpairs):
-
     plt.subplot(2,4,1)
     plt.imgshpw(im)
     imgpairs["pairname"] = [clear_imgname(x.img1)+clear_imgname(x.img2) for _, x in imgpairs.iterrows()]
     print(imgpairs[["img1","img2"]])
-    
-    #vupd = imgpairs.groupby("pairname").apply(compute_vote_change(x, ig))
-    
-    #for ip, p in imgpairs.iterrows():
-        
-        
+                
     
 if __name__ == "__main__":
     

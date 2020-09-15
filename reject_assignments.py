@@ -34,14 +34,7 @@ if __name__ == "__main__":
     
     est = pd.read_csv(sys.argv[1] + "/est_all.csv", index_col = 0)
     workers = pd.read_csv(sys.argv[1] + "/workers_all.csv", index_col = "workerId")
-    '''
+    
     for wid, w in workers.iterrows():
         if (w.cnt_invalid_survey > 20 and w.hit_count >= 5 and 15*w.cnt_invalid_survey >= w.hit_count):
-            #print(wid, w.cnt_invalid_survey, w.hit_count)
             change_workers_results(est.loc[est.workerId == wid])
-        elif (w.hit_count >= 5 and w.w_own == -1 and w.h_own == -1):# and w.gender == "none" and w.country == "none" and w.age == "none"):
-            print(w)
-            #change_workers_results(est.loc[est.workerId == wid], emptyworker=True)
-    '''   
-    change_workers_results(est.loc[est.workerId == "A1WKF2VH7TV0H2"], accept=True)
-    #change_workers_results(est.loc[est.workerId == "A2T0L5CXX7VBTF"], accept=True)

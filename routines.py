@@ -72,15 +72,6 @@ def assign_BMI_categories(img):
     img.loc[img.bmi_true <= 18.5,"bmitype"] = "underweight"# $\leq 18.5$"
     img.loc[img.bmi_true <= 18.5,"bmiclass"] = 1    
     
-    print(np.unique(img.bmitype))
-    
-    print(img.groupby('bmitype').apply(lambda x: 100*x.shape[0]/img.shape[0]))
-    
-    #img["bmitype"] = "larger BMI"
-    #img["bmiclass"] = 0
-    #img.loc[img.bmi_true < bmival[round(0.5*n)],"bmitype"] = ("bmi_true <= %.1lf" % bmival[round(0.5*n)])
-    #img.loc[img.bmi_true < bmival[round(0.5*n)],"bmiclass"] = 1
-    
     return img
     
     

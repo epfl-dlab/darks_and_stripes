@@ -93,20 +93,7 @@ def dist_plot(imgt, imgc, trt_name, ctr_name, meas, qname, unit, xdelta, binstep
         unit = " [" + unit + "]"
     
     h = np.linspace(min(np.amin(imgt[meas+"_true"]), np.amin(imgc[meas+"_true"])), max(np.amax(imgt[meas+"_true"]), np.amax(imgc[meas+"_true"])), 11)
-    '''
-    sns.distplot(imgc[meas+"_true"], color=get_meas_color(meas)[0], label=( ctr_name + (" (mean: %.2lf)" % np.mean(imgc[meas+"_true"]) ) ), bins=h)
-    sns.distplot(imgt[meas+"_true"], color=get_meas_color(meas)[2], label=( trt_name + (" (mean: %.2lf)" % np.mean(imgt[meas+"_true"]) ) ), bins=h)
     
-    plt.xlabel('True ' + qname + unit, fontsize = fslabels)
-    plt.xticks(fontsize = fsticks)
-    plt.yticks(fontsize = fsticks)
-    if (num == 1):
-        plt.ylabel('Relative frequency', fontsize = fslabels)
-    plt.legend(fontsize = fslegend)
-    plt.tight_layout()
-    plt.savefig('Plots/' + 'plot_dist_' + meas + '_ds.pdf')
-    plt.show()
-    '''
     print("Treated vs control for ", meas, ":")
     print(">:", np.sum(imgt[meas+"_est"].values > imgc[meas+"_est"].values))
     print("<:", np.sum(imgt[meas+"_est"].values < imgc[meas+"_est"].values))
@@ -124,9 +111,6 @@ def dist_plot(imgt, imgc, trt_name, ctr_name, meas, qname, unit, xdelta, binstep
     print("\nRelative pairwise difference:", trt_name, "-", ctr_name, "for", meas, '%')
     print('Wilcoxon (t, pval): %.3lf, %.5lf' % (sw, pval))
     print("Effect strength:", bs.bootstrap(imgt[meas+"_rel_diff"].values, stat_func=bs_stats.mean, alpha=0.05, num_iterations=10000))
-    
-    
-    print("##########################################################\n\n")
     
     constant_bins = range(-xdelta, xdelta, binstep)
     sns.distplot(imgt[meas+"_est"].values-imgc[meas+"_est"].values, bins=constant_bins, color=get_meas_color(meas)[0])
@@ -176,13 +160,6 @@ def scatter_plot(imgt, imgc, trt_name, ctr_name, meas, qname, unit, mmin, mmax):
     plt.xticks(fontsize=fsticks)
     plt.yticks(fontsize=fsticks)
     
-    '''
-    for i in range(imgt.shape[0]):
-        #print(imgt[["w_err_l","w_err_u"]].values[i,:].reshape((2,1)))
-        plt.errorbar(imgt[meas+"_est"].values[i], imgc[meas+"_est"].values[i],\
-                xerr = np.absolute(imgt[[meas+"_err_l",meas+"_err_u"]].values[i,:].reshape((2,1))),\
-                yerr = np.absolute(imgc[[meas+"_err_l",meas+"_err_u"]].values[i,:].reshape((2,1))), color="blue")
-    '''
     plt.gca().set_aspect(aspect=1)
     plt.tight_layout()
     plt.savefig('Plots/plot_scatter_' + meas + '_pairwise_comp_clean_' + trt_name + '_' + ctr_name + '.pdf')
@@ -231,7 +208,6 @@ def plot_matched_results(imgt, imgc, trt_name, ctr_name, est, workers):
     scatter_plot(imgt, imgc, trt_name, ctr_name, 'bmi', 'BMI', '', 17, 40)
     
     # print 5 couples with the largest difference between the groups    
-    '''
     imgt = imgt.sort_values(by = 'w_est_diff')
     print(imgt[["w_est","w_est2","paired_filename"]])
     idmax = imgt.index.values[:10]
@@ -277,7 +253,6 @@ def plot_matched_results(imgt, imgc, trt_name, ctr_name, est, workers):
         plt.tight_layout()
         plt.savefig('Plots/samplewise' + str(num) + "_dist.pdf")
         #plt.show()
-    '''
     
 def plot_image(im):    
     print(im.name)
@@ -310,18 +285,6 @@ def show_matching_pairs(imgt, imgc):
         if (np.random.rand() > 0.5):
             p = (p[0].replace("_light", "_dark"), p[1].replace("_light","_dark"))
                 
-        '''
-        plt.subplot(2,2,1)
-        plot_image(img.loc[p[0]])
-        plt.subplot(2,2,2)
-        plot_image(img.loc[p[1]])
-        plt.subplot(2,2,3)
-        plot_image(img.loc[op[0]])
-        plt.subplot(2,2,4)
-        plot_image(img.loc[op[1]])
-        plt.tight_layout()
-        plt.show()
-        '''
         # add 4 possible combinations of pairs    
         pdd["img1"].append(p[0].replace(".jpg", "_numbered.jpg"))
         pdd["img2"].append(p[1].replace(".jpg", "_numbered.jpg"))
@@ -341,32 +304,11 @@ def show_matching_pairs(imgt, imgc):
             
 if __name__ == "__main__":
 
-    '''
     _, im, w = read_dirty_data('large_set_results', stripes=[], colors=["light", "dark"])
-
-    print(im.shape, im.loc[im.gender == "male"].shape, im.loc[im.gender == "female"].shape)
-    print(im.groupby('bmitype').count())
-    print("Total for 1: ", w.shape)
-
-    print("Total im count: ", im.shape)
-
-    w1 = pd.read_csv("clean_set_results/res_clothes_dark/workers.csv", index_col = "workerId")                  
-    w2 = pd.read_csv("clean_set_results/res_clothes_light/workers.csv", index_col = "workerId")
-    w3 = pd.read_csv("clean_set_results/res_clothes_stripes/workers.csv", index_col = "workerId")
-                               
-    ww = pd.concat([w, w1, w2, w3], join='inner')
-
-    print("Total unique workers:", ww.shape)
-    sys.exit(0)
-    '''
+    
     if (len(sys.argv) == 2):
         est, images, workers = read_dirty_data(sys.argv[1], stripes=[1], colors=["light"])
-        #workers = workers.loc[workers.country == "United States"]
-        #est = est.loc[est.workerId.isin(workers.index.values)]
-        #images = compute_image_error(est, images)
-        #images.to_csv(sys.argv[1] + os.sep + 'images_final.csv', float_format='%.2lf')
-        #images = images.loc[images.stripes == 0]
-        simages = images.loc[images.color_type == "light"]
+        images = images.loc[images.color_type == "light"]
         #simages = images.loc[(images.stripes) > 0]
     else:
         est, images, workers = read_clean_data(sys.argv[1], sys.argv[2])
@@ -406,25 +348,7 @@ if __name__ == "__main__":
     valid = [idx.replace("_light","").replace("_dark","") != x.paired_filename.replace("_dark","").replace("_light","")\
              for idx, x in imgt.iterrows()]
     print("Wrongly assigned:", imgt.loc[np.asarray(valid),"paired_filename"])
-    
-    #idx = np.abs(imgt.w_est_diff.values) < 10
-    #imgt, imgc = imgt[idx], imgc[idx]
-    
-    #for i in np.random.choice(imgt.index.values, 10, replace=False): 
-    #    plot_time_evolution(i, imgt.loc[i,"paired_filename"], est)
-    
-    # worst-case
-    #imgt.bmi_est = imgt.bmi_est_u
-    #imgc.bmi_est = imgc.bmi_est_l
-    
-    # best-case
-    #imgt.bmi_est = imgt.bmi_est_l
-    #imgc.bmi_est = imgc.bmi_est_u
-        
-    # Filter by BMI
-    #select_idx = (imgt.bmitype.values != "obese")
-    #imgt, imgc = imgt.loc[select_idx], imgc.loc[select_idx]
-    
+     
     # visualize the results
     plot_matched_results(imgt, imgc, "light", "striped", est, workers)
     
