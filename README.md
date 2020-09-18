@@ -1,11 +1,14 @@
-# darks_and_stripes
-Code for publication 'Darks and Stripes: Effects of Clothing on Weight Perception'
+# Darks and Stripes: Effects of Clothing on Weight Perception
 
-This repo contains the code that we used to collect, filter, annotate, and analyse the data as described in the article. The code is explorative and was written without any intent to maintain or reuse it in the future. This is just a fancy way to say that large pieces of the code may appear consufing to a reader outside of our research group. If you struggle to understand it and need clarifications, please reach out to the authors. 
+Code for the publication
 
-Note that the paths to our data files are hardcoded at multiple locations. To be on the safe side with regards to privacy, we chose not to share the openly and make it available only upon request.
+> Kirill Martynov, Kiran Garimella, Robert West: **Darks and Stripes: Effects of Clothing on Weight Perception.** *Journal of Social Computing,* 2020.
 
-Below we briefly describe the code structure:
+This repo contains the code that we used to collect, filter, annotate, and analyze the data as described in the article.
+
+Note that the paths to our data files are hardcoded in multiple locations. The data files are available upon request from the authors.
+
+Repository structure:
 
 * Pre-processing of raw MTurk results:
     * parse_results.py
